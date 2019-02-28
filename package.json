@@ -54,10 +54,11 @@
     "webdriverio"
   ],
   "dependencies": {
-    "puppeteer": "1.7.0",
-    "compare-versions": "latest",
     "colors": "latest",
+    "compare-versions": "latest",
+    "express": "^4.16.4",
     "path": "latest",
+    "puppeteer": "1.7.0",
     "request": "latest",
     "sqlite3": "latest"
   },
