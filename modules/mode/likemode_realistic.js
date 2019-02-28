@@ -1,7 +1,6 @@
-const Manager_state = require("../common/state").Manager_state;
-class Likemode_realistic extends Manager_state {
+const manager = require("../common/state").currentManager;
+class Likemode_realistic {
   constructor(bot, config, utils, db) {
-    super();
     this.bot = bot;
     this.config = config;
     this.utils = utils;
@@ -203,7 +202,7 @@ class Likemode_realistic extends Manager_state {
           this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "liked error");
         }
       }
-      this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
+      manager.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
     } catch (err) {
       if (this.utils.is_debug()) {
         this.log.debug(err);
@@ -211,7 +210,7 @@ class Likemode_realistic extends Manager_state {
 
       this.log.warning("</3");
       this.db.run("INSERT INTO users (account, mode, username, photo_url, hashtag, type_action) VALUES (?, ?, ?, ?, ?, ?)", this.config.instagram_username, this.LOG_NAME, username, this.photo_current, this.hashtag_tag, "liked error");
-      this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
+      manager.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
     }
 
     await this.utils.sleep(this.utils.random_interval(3, 6));

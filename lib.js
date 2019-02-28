@@ -1,4 +1,6 @@
 module.exports = function (config) {
+  const manager = require("./modules/common/state").currentManager;
+
   this.config = config;
   this.browser = null;
 
@@ -35,7 +37,6 @@ module.exports = function (config) {
       config = check.fixui(config);
     }
     config = check.fixconfig(config);
-    check.donate();
     check.check_updates(version.version);
     if (config.executable_path === "" || config.executable_path === false) {
       this.browser = await puppeteer.launch({
@@ -74,21 +75,21 @@ module.exports = function (config) {
 
     await login.start();
 
-    if (login.is_ok()) {
+    if (manager.is_ok()) {
       await twofa.start_twofa_location_check();
     }
-    if (twofa.is_ok_nextverify()) {
+    if (manager.is_ok_nextverify()) {
       await twofa.start_twofa_location();
     }
 
-    if (twofa.is_ok()) {
+    if (manager.is_ok()) {
       await twofa.start_twofa_check();
     }
-    if (twofa.is_ok_nextverify()) {
+    if (manager.is_ok_nextverify()) {
       await twofa.start();
     }
 
-    if (twofa.is_ok()) {
+    if (manager.is_ok()) {
       await switch_mode();
     }
 

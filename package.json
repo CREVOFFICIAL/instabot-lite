@@ -5,7 +5,6 @@
   "main": "lib.js",
   "author": "Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)",
   "license": "GPL-3.0",
-  "homepage": "https://instagram.bot.ptkdev.io",
   "repository": {
     "type": "git",
     "url": "https://github.com/social-manager-tools/instagram-bot-lib.git"
@@ -34,25 +33,6 @@
     "npm-publish-nightly": "git checkout nightly && git checkout nightly",
     "tests": "mocha tests --recursive"
   },
-  "pre-commit": [
-    "precommit-lint-check",
-    "lint"
-  ],
-  "keywords": [
-    "bot",
-    "ptkdev",
-    "instagram",
-    "instagram-lib",
-    "instagram-api",
-    "instagram-bot",
-    "instagram-puppeteer",
-    "instapy",
-    "instabot",
-    "instagress",
-    "puppeteer",
-    "selenium",
-    "webdriverio"
-  ],
   "dependencies": {
     "colors": "latest",
     "compare-versions": "latest",

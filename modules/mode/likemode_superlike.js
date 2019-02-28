@@ -1,7 +1,6 @@
-const Manager_state = require("../common/state").Manager_state;
-class Likemode_superlike extends Manager_state {
+const manager = require("../common/state").currentManager;
+class Likemode_superlike {
   constructor(bot, config, utils) {
-    super();
     this.bot = bot;
     this.config = config;
     this.utils = utils;
@@ -124,13 +123,13 @@ class Likemode_superlike extends Manager_state {
       await this.bot.waitForSelector("article:nth-child(1) header:nth-child(1) div:nth-child(2) a:nth-child(1)");
       let button = await this.bot.$("article:nth-child(1) header:nth-child(1) div:nth-child(2) a:nth-child(1)");
       await button.click();
-      this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
+      manager.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
     } catch (err) {
       if (this.utils.is_debug()) {
         this.log.debug(err);
       }
 
-      this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
+      manager.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
     }
 
     await this.utils.sleep(this.utils.random_interval(3, 6));
@@ -222,14 +221,14 @@ class Likemode_superlike extends Manager_state {
         await button.click();
         this.log.info("<3");
       }
-      this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
+      manager.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
     } catch (err) {
       if (this.utils.is_debug()) {
         this.log.debug(err);
       }
 
       this.log.warning("</3");
-      this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
+      manager.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
     }
 
     await this.utils.sleep(this.utils.random_interval(3, 6));
@@ -279,7 +278,7 @@ class Likemode_superlike extends Manager_state {
 
           await this.like_open_userpage();
 
-          while (this.get_status() === 0) {
+          while (manager.get_status() === 0) {
             this.log.info("photo not found, retry next...");
             await this.like_get_urlpic();
             await this.like_open_userpage();
@@ -300,7 +299,7 @@ class Likemode_superlike extends Manager_state {
         }
         this.cache_hash_tags_user = [];
 
-        if (this.cache_hash_tags.length < 9 || this.is_ready()) { // remove popular photos
+        if (this.cache_hash_tags.length < 9 || manager.is_ready()) { // remove popular photos
           this.cache_hash_tags = [];
         }
 
@@ -309,7 +308,7 @@ class Likemode_superlike extends Manager_state {
           break;
         }
 
-        if (this.cache_hash_tags.length <= 0 && this.is_not_ready()) {
+        if (this.cache_hash_tags.length <= 0 && manager.is_not_ready()) {
           this.log.info(`finish fast like, bot sleep ${this.config.bot_fastlike_min}-${this.config.bot_fastlike_max} minutes`);
           this.cache_hash_tags = [];
           await this.utils.sleep(this.utils.random_interval(60 * this.config.bot_fastlike_min, 60 * this.config.bot_fastlike_max));

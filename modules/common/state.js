@@ -10,14 +10,18 @@ const STATE = {
 const EVENTS = {
   CHANGE_STATUS: "change_status"
 };
+let instance;
 
 const event_emitter = require("events").EventEmitter;
 class Manager_state extends event_emitter {
   constructor(params) {
     super(params);
+    if (instance) return instance;
     this._status = STATE.START;
     this.register_handler();
+    instance = this;
   }
+
 
   register_handler() {
     this.on(EVENTS.CHANGE_STATUS, (status) => {
@@ -62,5 +66,5 @@ class Manager_state extends event_emitter {
 module.exports = {
   STATE: STATE,
   EVENTS: EVENTS,
-  Manager_state: Manager_state
+  currentManager: new Manager_state()
 };

@@ -1,7 +1,6 @@
-const Manager_state = require("../common/state").Manager_state;
-class Login extends Manager_state {
+const manager = require("../common/state").currentManager;
+class Login {
   constructor(bot, config, utils) {
-    super();
     this.bot = bot;
     this.config = config;
     this.utils = utils;
@@ -53,15 +52,15 @@ class Login extends Manager_state {
     try {
       text = await this.bot.$("#slfErrorAlert");
       if (text !== null) {
-        this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
+        manager.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.ERROR);
       } else {
-        this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
+        manager.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
       }
     } catch (err) {
-      this.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
+      manager.emit(this.STATE_EVENTS.CHANGE_STATUS, this.STATE.OK);
     }
 
-    if (this.is_error()) {
+    if (manager.is_error()) {
       let html_response = await this.bot.evaluate(body => body.innerHTML, text);
       await text.dispose();
 
@@ -95,7 +94,7 @@ class Login extends Manager_state {
     await this.utils.sleep(this.utils.random_interval(3, 6));
 
     await this.submitverify();
-    this.log.info(`login_status is ${this.get_status()}`);
+    this.log.info(`login_status is ${manager.get_status()}`);
 
     await this.utils.sleep(this.utils.random_interval(3, 6));
   }
